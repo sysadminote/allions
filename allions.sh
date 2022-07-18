@@ -599,7 +599,7 @@ cd $path;wget --no-check-certificate -q https://www.nagios.org/downloads/nagios-
 
 
 ############ if fails to find the last version, download version 4.4.6 ################
-latest_nagios=`cat index.html* 2>/dev/null  | grep "assets.nagios.com/downloads/nagioscore/releases" | sed -n '1p' | awk '{print $2}' | sed -e 's/<[^()]*>//g' | sed -e 's/\/[^()]*\///g' | sed -e 's/\"[^()]*\">//g' | sed -e 's/href=//g' `
+latest_nagios=`cat index.html* 2>/dev/null  | grep "assets.nagios.com/downloads/nagioscore/releases" | sed -n '1p' | awk '{print $6}' | sed -e 's/<[^()]*>//g' | sed -e 's/\/[^()]*\///g' | sed -e 's/\"[^()]*\">//g' | sed -e 's/href=//g' `
 
 echo $latest_nagios | grep tar.gz > targz.txt
 
@@ -716,7 +716,7 @@ cd $path;wget --no-check-certificate -q https://www.nagios.org/downloads/nagios-
 
 
 ############ if fails to find the last version, download version 4.4.6 ################
-latest_nagios=`cat index.html* 2>/dev/null  | grep "assets.nagios.com/downloads/nagioscore/releases" | sed -n '1p' | awk '{print $2}' | sed -e 's/<[^()]*>//g' | sed -e 's/\/[^()]*\///g' | sed -e 's/\"[^()]*\">//g' | sed -e 's/href=//g' `
+latest_nagios=`cat index.html* 2>/dev/null  | grep "assets.nagios.com/downloads/nagioscore/releases" | sed -n '1p' | awk '{print $6}' | sed -e 's/<[^()]*>//g' | sed -e 's/\/[^()]*\///g' | sed -e 's/\"[^()]*\">//g' | sed -e 's/href=//g' `
 
 
 version=`echo $latest_nagios | sed 's/.*-//' | sed 's/t.*//' | sed 's/.$//'`
@@ -900,7 +900,7 @@ cd $path;wget --no-check-certificate -q https://www.nagios.org/downloads/nagios-
 
 
 ############ if fails to find the last version, download version 4.4.6 ################
-latest_nagios=`cat index.html* 2>/dev/null  | grep "assets.nagios.com/downloads/nagioscore/releases" | sed -n '1p' | awk '{print $2}' | sed -e 's/<[^()]*>//g' | sed -e 's/\/[^()]*\///g' | sed -e 's/\"[^()]*\">//g' | sed -e 's/href=//g' `
+latest_nagios=`cat index.html* 2>/dev/null  | grep "assets.nagios.com/downloads/nagioscore/releases" | sed -n '1p' | awk '{print $6}' | sed -e 's/<[^()]*>//g' | sed -e 's/\/[^()]*\///g' | sed -e 's/\"[^()]*\">//g' | sed -e 's/href=//g' `
 
 
 version=`echo $latest_nagios | sed 's/.*-//' | sed 's/t.*//' | sed 's/.$//'`
@@ -1610,7 +1610,7 @@ echo;sleep 2
 
 mkdir upgrade-nagios 2> /dev/null;wget --no-check-certificate -q https://www.nagios.org/downloads/nagios-core/thanks/?t=1504034794 2> /dev/null
 
-latest_nagios=`cat index.html* 2>/dev/null  | grep "assets.nagios.com/downloads/nagioscore/releases" | sed -n '1p' | awk '{print $2}' | sed -e 's/<[^()]*>//g' | sed -e 's/\/[^()]*\///g' | sed -e 's/\"[^()]*\">//g' | sed -e 's/href=//g' `
+latest_nagios=`cat index.html* 2>/dev/null  | grep "assets.nagios.com/downloads/nagioscore/releases" | sed -n '1p' | awk '{print $6}' | sed -e 's/<[^()]*>//g' | sed -e 's/\/[^()]*\///g' | sed -e 's/\"[^()]*\">//g' | sed -e 's/href=//g' `
 version=`echo $latest_nagios | sed 's/.*-//' | sed 's/t.*//' | sed 's/.$//'`
 
 echo $latest_nagios | grep tar.gz > check_core.txt
@@ -2039,7 +2039,7 @@ echo;sleep 2
 
 mkdir upgrade-nagios 2> /dev/null;wget --no-check-certificate -q https://www.nagios.org/downloads/nagios-core/thanks/?t=1504034794 2> /dev/null
 
-latest_nagios=`cat index.html* 2>/dev/null  | grep "assets.nagios.com/downloads/nagioscore/releases" | sed -n '1p' | awk '{print $2}' | sed -e 's/<[^()]*>//g' | sed -e 's/\/[^()]*\///g' | sed -e 's/\"[^()]*\">//g' | sed -e 's/href=//g' `
+latest_nagios=`cat index.html* 2>/dev/null  | grep "assets.nagios.com/downloads/nagioscore/releases" | sed -n '1p' | awk '{print $6}' | sed -e 's/<[^()]*>//g' | sed -e 's/\/[^()]*\///g' | sed -e 's/\"[^()]*\">//g' | sed -e 's/href=//g' `
 version=`echo $latest_nagios | sed 's/.*-//' | sed 's/t.*//' | sed 's/.$//'`
 folder_plugin=`echo $latest_nagios | sed -e 's/.tar.gz//g'` 2> /dev/null
 echo $latest_nagios | grep tar.gz > check_core.txt
