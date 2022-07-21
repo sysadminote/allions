@@ -1,3 +1,7 @@
+### Note
+I think there is a bug in Nagios version 4.4.7 where after we install Nagios there is an error Unable to get process status even though when we open Nagios in the browser even though in the CLI, Nagios can run normally. Then maybe we have to wait for the release of Nagios version 4.4.8 or we use the previous version of Nagios, which is version 4.4.6
+
+
 ### Purpose
 
 ---
