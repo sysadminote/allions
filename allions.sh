@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 ##########################################################################################################################
 
@@ -115,7 +115,7 @@ echo "Nagios Main Configuration File ' /usr/local/nagios/etc/nagios.cfg '" 2> /d
 echo "Nagios Object configuration Files   : ${txtcyn}/usr/local/nagios/etc/objects/${txtrst}"
 echo "Nagios Object configuration Files: /usr/local/nagios/etc/objects/ '" 2> /dev/null  >> $log
 echo "Nagios Apache Configuration File    : ${txtcyn}/etc/httpd/conf.d/nagios.conf${txtrst} ${txtrst} (For Redhat Based: CentOS, AlmaLinux, RockyLinux, Fedora)
-  	 			    : ${txtcyn}/etc/apache2/sites-enabled/nagios.conf${txtrst} ${txtrst} (For Ubuntu/Debian)                          				    								                      	            : ${txtcyn}/etc/apache2/vhosts.d/nagios.conf${txtrst} (For OpenSUSE)"
+                                    : ${txtcyn}/etc/apache2/sites-enabled/nagios.conf${txtrst} ${txtrst} (For Ubuntu/Debian)                                                                                                  : ${txtcyn}/etc/apache2/vhosts.d/nagios.conf${txtrst} (For OpenSUSE)"
 echo "Nagios Apache Configuration File ' /etc/httpd/conf.d/nagios.conf '" 2> /dev/null  >> $log
 sleep 2
 
@@ -451,6 +451,8 @@ sleep 2
 echo;echo
 echo "${txtylw}Restarting Apache Service${txtrst}"
 sleep 1
+sudo firewall-cmd --zone=public --add-port=80/tcp 2>/dev/null
+firewall-cmd --zone=public --add-port=80/tcp --permanent 2>/dev/null
 systemctl restart apache2 2>/dev/null
 echo "${txtgrn}Done${txtrst}"
 sleep 2
@@ -579,7 +581,7 @@ list=`ls -l | grep php.txt | awk '{print $5}'`
 
 sleep 1
 apt update
-apt-get install -y autoconf apache2 libapache2-mod-php automake make openssl autoconf gcc libc6 libmcrypt-dev make unzip libssl-dev wget bc gawk dc build-essential snmp libnet-snmp-perl gettext;check
+apt-get install -y php libgd-dev php-gd autoconf apache2 libapache2-mod-php automake make openssl autoconf gcc libc6 libmcrypt-dev make unzip libssl-dev wget bc gawk dc build-essential snmp libnet-snmp-perl gettext;check
 sleep 1
 echo "${txtgrn}Done${txtrst}"
 echo
@@ -630,9 +632,9 @@ then
 
                          while true
                          do
-                          	 echo
-	                         read -p "Are you sure want to continue (y/n)? " answer
-        	                 case $answer in
+                                 echo
+                                 read -p "Are you sure want to continue (y/n)? " answer
+                                 case $answer in
                                  [yY]* ) echo "${txtpur}Okay, I will download Nagios version 4.4.6 from official web.${txtrst}"
                                          sleep 2
                                          cd $path;wget --no-check-certificate 'https://assets.nagios.com/downloads/nagioscore/releases/nagios-4.4.6.tar.gz' -O nagios-4.4.6.tar.gz
@@ -642,9 +644,9 @@ then
                                  break;;
                                  [nN]* ) sleep 2;rm -rf index_latest.html latest* latest_year.txt nagplug.txt php.txt plugin1.txt plugin.txt result.txt reverse.txt index* php.txt year.txt version.txt check_nagios.txt rpm_nagios.txt rpm_nagios_cfg.txt targz.txt wget-log*
                                          thankyou
-                                 	 break;;
-                         	    * )  echo "Just enter Y or N, please.";;
-                         	 esac
+                                         break;;
+                                    * )  echo "Just enter Y or N, please.";;
+                                 esac
                          done
         fi
 else
@@ -667,7 +669,7 @@ else
                                 nagioscore_ubuntu_446
                         else
                                 echo;
-				sleep 2;
+                                sleep 2;
                                 echo "${txtylw}Wait a minute, I look for another source ...${txtrst}";sleep 2
                                 cd $path;wget --no-check-certificate 'https://archive.org/download/nagios-4.4.6.tar/nagios-4.4.6.tar.gz' -O nagios-4.4.6.tar.gz
                                 echo "${txtgrn}Nagios version 4.4.6 has been download and we will install it to your server${txtrst}"
@@ -679,7 +681,7 @@ else
 
                 [nN]* ) sleep 2;rm -rf index_latest.html latest* latest_year.txt nagplug.txt php.txt plugin1.txt plugin.txt result.txt reverse.txt index* php.txt year.txt version.txt check_nagios.txt rpm_nagios.txt rpm_nagios_cfg.txt targz.txt wget-log*
                         thankyou
-	                break;;
+                        break;;
                 * )     echo "Just enter Y or N, please.";;
         esac
 done
@@ -737,7 +739,7 @@ then
         count=`ls -1 nagios*.tar.gz 2>/dev/null | wc -l `
         if [ $count != 0 ]
                 then
-	                nagioscore_suse_update
+                        nagioscore_suse_update
                 else
                          echo ${txtred}I detected there is a problem when I want to check the latest version of Nagios.${txtrst}
                          sleep 2
@@ -745,21 +747,21 @@ then
 
                          while true
                          do
-                         	echo
-	                        read -p "Are you sure want to continue (y/n)? " answer
-        	                case $answer in
+                                echo
+                                read -p "Are you sure want to continue (y/n)? " answer
+                                case $answer in
                                 [yY]* ) echo "${txtpur}Okay, I will download Nagios version 4.4.6 from official web${txtrst}"
                                         sleep 2
                                         cd $path;wget --no-check-certificate 'https://assets.nagios.com/downloads/nagioscore/releases/nagios-4.4.6.tar.gz' -O nagios-4.4.6.tar.gz
                                         echo "${txtgrn}Nagios version 4.4.6 has been download and we will install it to your server${txtrst}"
                                         sleep 1
                                         nagioscore_suse_446
-	                                break;;
+                                        break;;
                                 [nN]* ) sleep 2;rm -rf index_latest.html latest* latest_year.txt nagplug.txt php.txt plugin1.txt plugin.txt result.txt reverse.txt index* php.txt year.txt version.txt check_nagios.txt rpm_nagios.txt rpm_nagios_cfg.txt targz.txt wget-log*
                                         thankyou
-	                                break;;
-         		            * ) echo "Just enter Y or N, please.";;
-                         	esac
+                                        break;;
+                                    * ) echo "Just enter Y or N, please.";;
+                                esac
                          done
         fi
 else
@@ -769,34 +771,34 @@ else
 
         while true
         do
-        	echo
-	        read -p "Are you sure want to continue (y/n)? " answer
-	        case $answer in
-        	   [yY]* )   echo "${txtpur}Okay, I will download Nagios version 4.4.6 from official web.${txtrst}"
-                	     sleep 2
+                echo
+                read -p "Are you sure want to continue (y/n)? " answer
+                case $answer in
+                   [yY]* )   echo "${txtpur}Okay, I will download Nagios version 4.4.6 from official web.${txtrst}"
+                             sleep 2
                              echo
-	                     cd $path;wget  --no-check-certificate https://assets.nagios.com/downloads/nagioscore/releases/nagios-4.4.6.tar.gz
-			     sleep 2
-        	             count=`ls -1 nagios-*.tar.gz  2>/dev/null | wc -l`
-                	     if [ $count != 0 ]
+                             cd $path;wget  --no-check-certificate https://assets.nagios.com/downloads/nagioscore/releases/nagios-4.4.6.tar.gz
+                             sleep 2
+                             count=`ls -1 nagios-*.tar.gz  2>/dev/null | wc -l`
+                             if [ $count != 0 ]
                              then
-                               	 nagioscore_suse_446
-	                     else
-        	                 echo;
-                	         echo "${txtylw}Wait a minute, I look for another source ...${txtrst}";sleep 2
+                                 nagioscore_suse_446
+                             else
+                                 echo;
+                                 echo "${txtylw}Wait a minute, I look for another source ...${txtrst}";sleep 2
                                  cd $path;wget --no-check-certificate 'https://archive.org/download/nagios-4.4.6.tar/nagios-4.4.6.tar.gz' -O nagios-4.4.6.tar.gz
                                  echo "${txtgrn}Nagios version 4.4.6 has been download and we will install it to your server${txtrst}"
-	                         echo
-        	                 sleep 2
-                	         nagioscore_suse_446
+                                 echo
+                                 sleep 2
+                                 nagioscore_suse_446
                              fi
-	                	break;;
-        	   [nN]* )   sleep 2;rm -rf index_latest.html latest* latest_year.txt nagplug.txt php.txt plugin1.txt plugin.txt result.txt reverse.txt index* php.txt year.txt version.txt check_nagios.txt rpm_nagios.txt rpm_nagios_cfg.txt targz.txt wget-log*
-	                     thankyou
-                 	     break;;
-	               * )   echo "Just enter Y or N, please.";;
-        	esac
-	done
+                                break;;
+                   [nN]* )   sleep 2;rm -rf index_latest.html latest* latest_year.txt nagplug.txt php.txt plugin1.txt plugin.txt result.txt reverse.txt index* php.txt year.txt version.txt check_nagios.txt rpm_nagios.txt rpm_nagios_cfg.txt targz.txt wget-log*
+                             thankyou
+                             break;;
+                       * )   echo "Just enter Y or N, please.";;
+                esac
+        done
 fi
 }
 
@@ -878,14 +880,30 @@ fi
 install_centos() {
 ############ Installation Some Packages Needed to Install Nagios  ################
 
+#Check Firewall
+firewall-cmd --zone=public --add-port=80/tcp --permanent 2> /dev/null
+firewall-cmd --reload  2> /dev/null
+setenforce 0  2> /dev/null
+
+
 echo "${txtylw}Installation Some Packages Needed to Install Nagios.${txtrst}"
 list=`ls -l | grep php.txt | awk '{print $5}'`
 
 sleep 1
-yum install -y httpd gcc glibc glibc-common gd gd-devel make net-snmp-* wget zip unzip tar;check
+yum install -y php php-devel php-gd httpd gcc glibc glibc-common gd gd-devel make net-snmp-* wget zip unzip tar;check
 sleep 1
 echo "${txtgrn}Done${txtrst}"
 echo
+sleep 1
+
+cat /etc/httpd/conf/httpd.conf | grep index.php > httpd.txt
+httpd=`ls -al httpd.txt | awk '{print $5}'`
+
+if [ $httpd == 0 ]
+then
+        sed -i 's/\index.html\b/& index.php/' /etc/httpd/conf/httpd.conf
+fi
+
 sleep 2
 nagios_centos
 }
@@ -914,7 +932,7 @@ then
         echo
         nagios_core=`echo $latest_nagios`
         folder_nagios=`echo $nagios_core | sed -e 's/.tar.gz//g'`
-	echo "${txtylw}Downloading latest version of Nagios core...${txtrst}";sleep 2;echo
+        echo "${txtylw}Downloading latest version of Nagios core...${txtrst}";sleep 2;echo
         echo "Downloading Nagios-Latest-version" 2> /dev/null >> $log
         sleep 2
         cd $path;wget  --no-check-certificate https://assets.nagios.com/downloads/nagioscore/releases/$nagios_core
@@ -924,62 +942,62 @@ then
                         nagioscore_centos_update
                 else
                          echo ${txtred}I detected there is a problem when I want to check the latest version of Nagios.${txtrst}
-			 sleep 2
+                         sleep 2
                          echo ${txtylw}So, I will install Nagios core version 4.4.6.${txtrst}
 
                          while true
                          do
- 	                        echo
-        	                read -p "Are you sure want to continue (y/n)? " answer
-                	        case $answer in
-                        	     [yY]* ) 	echo "${txtpur}Okay, I will download Nagios version 4.4.6 from official web.${txtrst}"
-                                 	        sleep 2
-						cd $path;wget --no-check-certificate 'https://assets.nagios.com/downloads/nagioscore/releases/nagios-4.4.6.tar.gz' -O nagios-4.4.6.tar.gz
+                                echo
+                                read -p "Are you sure want to continue (y/n)? " answer
+                                case $answer in
+                                     [yY]* )    echo "${txtpur}Okay, I will download Nagios version 4.4.6 from official web.${txtrst}"
+                                                sleep 2
+                                                cd $path;wget --no-check-certificate 'https://assets.nagios.com/downloads/nagioscore/releases/nagios-4.4.6.tar.gz' -O nagios-4.4.6.tar.gz
                                                 echo "${txtgrn}Nagios version 4.4.6 has been download and we will install it to your server${txtrst}"
                                                 sleep 1
                                                 nagioscore_centos_446
-		                                break;;
-                                     [nN]* ) 	sleep 2;rm -rf index_latest.html latest* latest_year.txt nagplug.txt php.txt plugin1.txt plugin.txt result.txt reverse.txt index* php.txt year.txt version.txt check_nagios.txt rpm_nagios.txt rpm_nagios_cfg.txt targz.txt wget-log*
-						thankyou
-		                                break;;
-                		         * )    echo "Just enter Y or N, please.";;
-                         	esac
+                                                break;;
+                                     [nN]* )    sleep 2;rm -rf index_latest.html latest* latest_year.txt nagplug.txt php.txt plugin1.txt plugin.txt result.txt reverse.txt index* php.txt year.txt version.txt check_nagios.txt rpm_nagios.txt rpm_nagios_cfg.txt targz.txt wget-log* httpd.txt
+                                                thankyou
+                                                break;;
+                                         * )    echo "Just enter Y or N, please.";;
+                                esac
                          done
         fi
 else
         echo ${txtred}I detected there is a problem when I want to check the latest version of Nagios.${txtrst}
-	sleep 2
+        sleep 2
         echo ${txtylw}So, I will install Nagios core version 4.4.6.${txtrst}
 
         while true
         do
-	        echo
-        	read -p "Are you sure want to continue (y/n)? " answer
-	        case $answer in
-        	     [yY]* )   echo "${txtpur}Okay, I will download Nagios version 4.4.6 from official web.${txtrst}"
-                 	       sleep 2
+                echo
+                read -p "Are you sure want to continue (y/n)? " answer
+                case $answer in
+                     [yY]* )   echo "${txtpur}Okay, I will download Nagios version 4.4.6 from official web.${txtrst}"
+                               sleep 2
                                echo
-	                       cd $path;wget  --no-check-certificate https://assets.nagios.com/downloads/nagioscore/releases/nagios-4.4.6.tar.gz 
-        	               count=`ls -1 nagios-*.tar.gz  2>/dev/null | wc -l`
-                	       if [ $count != 0 ]
+                               cd $path;wget  --no-check-certificate https://assets.nagios.com/downloads/nagioscore/releases/nagios-4.4.6.tar.gz
+                               count=`ls -1 nagios-*.tar.gz  2>/dev/null | wc -l`
+                               if [ $count != 0 ]
                                then
-                               	  	nagioscore_centos_446
+                                        nagioscore_centos_446
                                else
-					echo;
-                                	echo "${txtylw}Wait a minute, I look for another source ...${txtrst}";sleep 2
-					cd $path;wget --no-check-certificate 'https://archive.org/download/nagios-4.4.6.tar/nagios-4.4.6.tar.gz' -O nagios-4.4.6.tar.gz
-        	                        echo "${txtgrn}Nagios version 4.4.6 has been download and we will install it to your server${txtrst}"
-					echo
-                        	        sleep 2
-                                 	nagioscore_centos_446
+                                        echo;
+                                        echo "${txtylw}Wait a minute, I look for another source ...${txtrst}";sleep 2
+                                        cd $path;wget --no-check-certificate 'https://archive.org/download/nagios-4.4.6.tar/nagios-4.4.6.tar.gz' -O nagios-4.4.6.tar.gz
+                                        echo "${txtgrn}Nagios version 4.4.6 has been download and we will install it to your server${txtrst}"
+                                        echo
+                                        sleep 2
+                                        nagioscore_centos_446
                                fi
-		               break;;
-	             [nN]* )   sleep 2;rm -rf index_latest.html latest* latest_year.txt nagplug.txt php.txt plugin1.txt plugin.txt result.txt reverse.txt index* php.txt year.txt version.txt check_nagios.txt rpm_nagios.txt rpm_nagios_cfg.txt targz.txt wget-log*
-			       thankyou
-		               break;;
-	                * )    echo "Just enter Y or N, please.";;
-        	esac
-	done
+                               break;;
+                     [nN]* )   sleep 2;rm -rf index_latest.html latest* latest_year.txt nagplug.txt php.txt plugin1.txt plugin.txt result.txt reverse.txt index* php.txt year.txt version.txt check_nagios.txt rpm_nagios.txt rpm_nagios_cfg.txt targz.txt wget-log* httpd.txt
+                               thankyou
+                               break;;
+                        * )    echo "Just enter Y or N, please.";;
+                esac
+        done
 fi
 }
 
@@ -1022,27 +1040,27 @@ then
 
 else
         echo ${txtred}I detected there is a problem when I want to download latest Nagios Plugins version from official web.${txtrst}
-	sleep 2
+        sleep 2
         echo ${txtylw}I will install Nagios Plugins version 2.3.3 from another source.${txtrst}
 
         while true
         do
-        	echo
-	        read -p "Are you sure want to continue (y/n)? " answer
-        	case $answer in
-                     [yY]* ) 	echo "${txtpur}Okay, I will install Nagios Plugins version 2.3.3${txtrst}"
-                      		sleep 2
-				cd $path;wget --no-check-certificate 'https://archive.org/details/nagios-plugins-2.3.3.tar' -O nagios-plugins-2.3.3.tar.gz 2> /dev/null
+                echo
+                read -p "Are you sure want to continue (y/n)? " answer
+                case $answer in
+                     [yY]* )    echo "${txtpur}Okay, I will install Nagios Plugins version 2.3.3${txtrst}"
+                                sleep 2
+                                cd $path;wget --no-check-certificate 'https://archive.org/details/nagios-plugins-2.3.3.tar' -O nagios-plugins-2.3.3.tar.gz 2> /dev/null
                                 echo "${txtgrn}Nagios Plugin version 2.3.3 has been download and we will install it to your server${txtrst}"
                                 sleep 2
                                 nagiosplugin_233
-                		break;;
-        	     [nN]* ) 	sleep 2;rm -rf index_latest.html latest* latest_year.txt nagplug.txt php.txt plugin1.txt plugin.txt result.txt reverse.txt index* php.txt year.txt version.txt check_nagios.txt rpm_nagios.txt rpm_nagios_cfg.txt targz.txt wget-log*
-	                        thankyou
-        		        break;;
-	                * )     echo "Just enter Y or N, please.";;
-	        esac
-	done
+                                break;;
+                     [nN]* )    sleep 2;rm -rf index_latest.html latest* latest_year.txt nagplug.txt php.txt plugin1.txt plugin.txt result.txt reverse.txt index* php.txt year.txt version.txt check_nagios.txt rpm_nagios.txt rpm_nagios_cfg.txt targz.txt wget-log* httpd.txt
+                                thankyou
+                                break;;
+                        * )     echo "Just enter Y or N, please.";;
+                esac
+        done
 fi
 }
 
@@ -1098,15 +1116,15 @@ sleep 2
 if [ $size1 != 0 ]
 then
         echo "${txtgrn}It looks like you have installed Nagios. ${txtrst}"
-	sleep 1
-	echo "${txtgrn}Please, delete your Nagios first. ${txtrst}"
-	rm -rf check_nagios.txt
-	echo
+        sleep 1
+        echo "${txtgrn}Please, delete your Nagios first. ${txtrst}"
+        rm -rf check_nagios.txt
+        echo
         sleep 2
         exit
 else
         echo "${txtcyn}Ok, I will install Nagios in your server as soon as possible. ${txtrst}"
-	rm -rf check_nagios.txt
+        rm -rf check_nagios.txt
         sleep 2
         echo
         install_nagios_centos
@@ -1128,13 +1146,13 @@ then
         echo "${txtgrn}It looks like you have installed Nagios. ${txtrst}"
         sleep 1
         echo "${txtgrn}Please, delete your Nagios first. ${txtrst}"
-	echo
-	rm -rf check_nagios.txt
+        echo
+        rm -rf check_nagios.txt
         sleep 2
         exit
 else
         echo "${txtcyn}Ok, I will install Nagios in your server as soon as possible. ${txtrst}"
-	rm -rf check_nagios.txt
+        rm -rf check_nagios.txt
         sleep 2
         echo
         install_ubuntu
@@ -1155,13 +1173,13 @@ then
         echo "${txtgrn}It looks like you have installed Nagios. ${txtrst}"
         sleep 1
         echo "${txtgrn}Please, delete your Nagios first. ${txtrst}"
-	echo
-	rm -rf check_nagios.txt
+        echo
+        rm -rf check_nagios.txt
         sleep 2
         exit
 else
         echo "${txtcyn}Ok, I will install Nagios in your server as soon as possible. ${txtrst}"
-	rm -rf check_nagios.txt
+        rm -rf check_nagios.txt
         sleep 2
         echo
         install_suse
@@ -1349,7 +1367,7 @@ plugin_existing_version=`/usr/local/nagios/lib*/check_disk --version | awk '{pri
 echo "${txtgrn}Your Nagios Plugins version is $plugin_existing_version"${txtrst}
 sleep 3
 thankyou
-cd ..;rm -rf index_latest.html latest* latest_year.txt nagplug.txt php.txt plugin1.txt plugin.txt result.txt reverse.txt index* php.txt year.txt version.txt check_nagios.txt rpm_nagios.txt rpm_nagios_cfg.txt targz.txt wget-log*
+cd ..;rm -rf index_latest.html latest* latest_year.txt nagplug.txt php.txt plugin1.txt plugin.txt result.txt reverse.txt index* php.txt year.txt version.txt check_nagios.txt rpm_nagios.txt rpm_nagios_cfg.txt targz.txt wget-log* httpd.txt
 
 }
 
@@ -1383,7 +1401,7 @@ echo "Test1"
 if [ $existing_plugin -ge $latest_plugin ]
 then
    echo "${txtgrn}Your existing Nagios Plugins version is up-to-date.${txtrst}"
-   rm -rf index_latest.html latest* latest_year.txt nagplug.txt php.txt plugin1.txt plugin.txt result.txt reverse.txt index* php.txt year.txt version.txt check_nagios.txt rpm_nagios.txt rpm_nagios_cfg.txt check_latest_core.txt targz.txt wget-log*
+   rm -rf index_latest.html latest* latest_year.txt nagplug.txt php.txt plugin1.txt plugin.txt result.txt reverse.txt index* php.txt year.txt version.txt check_nagios.txt rpm_nagios.txt rpm_nagios_cfg.txt check_latest_core.txt targz.txt wget-log* httpd.txt
    echo
 sleep 3
 elif [ $existing_plugin -lt $latest_plugin ]
@@ -1395,19 +1413,19 @@ then
         echo
         case $answer in
                 [yY]* ) sleep 1;echo;echo "${txtpur}Okay, I will upgrade your plugin nagios version to the latest version.${txtrst}"
-                	echo "${txtylw}Please backup your Nagios configuration first and then if you finish backup, press any key to continue ... ${txtrst}";echo
+                        echo "${txtylw}Please backup your Nagios configuration first and then if you finish backup, press any key to continue ... ${txtrst}";echo
                         read -n 1 -s -r;echo;sleep 2
-			echo "${txtcyn}Latest version of Nagios Plugins is `echo $plugin_latest_version` version${txtrst}"
-			echo "${txtylw}I will Download the latest version of Nagios Plugins${txtrst}";sleep 2;echo
-			cd $path;wget  --no-check-certificate https://nagios-plugins.org/download/$nagios_plugin 
-        		count=`ls -1 nagios* 2>/dev/null | wc -l `
-        		if [ $count != 0 ]
-                		then
-				echo
-                        	nagiosplugin_centos_upgrade
-                	else
+                        echo "${txtcyn}Latest version of Nagios Plugins is `echo $plugin_latest_version` version${txtrst}"
+                        echo "${txtylw}I will Download the latest version of Nagios Plugins${txtrst}";sleep 2;echo
+                        cd $path;wget  --no-check-certificate https://nagios-plugins.org/download/$nagios_plugin
+                        count=`ls -1 nagios* 2>/dev/null | wc -l `
+                        if [ $count != 0 ]
+                                then
+                                echo
+                                nagiosplugin_centos_upgrade
+                        else
                         echo ${txtred}I detected there is a problem when download latest Nagios Plugins version in official website.${txtrst}
-			sleep 2
+                        sleep 2
                         echo ${txtylw}I will install Nagios Plugins version 2.3.3 from another source.${txtrst}
 
                          while true
@@ -1417,26 +1435,26 @@ then
                          case $answer in
                                 [yY]* ) echo;echo "${txtpur}Okay, I will download Nagios Plugins version 2.3.3${txtrst}"
                                         sleep 2
-					echo "${txtylw}Downloading Nagios Plugins version 2.3.3 ...${txtrst}"
-                                        cd $path;wget --no-check-certificate 'https://archive.org/details/nagios-plugins-2.3.3.tar/nagios-plugins-2.3.3.tar.gz' -O nagios-plugins-2.3.3.tar.gz 
+                                        echo "${txtylw}Downloading Nagios Plugins version 2.3.3 ...${txtrst}"
+                                        cd $path;wget --no-check-certificate 'https://archive.org/details/nagios-plugins-2.3.3.tar/nagios-plugins-2.3.3.tar.gz' -O nagios-plugins-2.3.3.tar.gz
                                         echo "${txtgrn}Nagios Plugins version 2.3.3 has been download and we will install it to your server${txtrst}"
                                         sleep 1
                                         nagiosplugin_centos_233
                                 break;;
-                                [nN]* ) rm -rf index_latest.html latest* latest_year.txt nagplug.txt php.txt plugin1.txt plugin.txt result.txt reverse.txt index* php.txt year.txt version.txt check_nagios.txt rpm_nagios.txt rpm_nagios_cfg.txt targz.txt wget-log*
-					thankyou
+                                [nN]* ) rm -rf index_latest.html latest* latest_year.txt nagplug.txt php.txt plugin1.txt plugin.txt result.txt reverse.txt index* php.txt year.txt version.txt check_nagios.txt rpm_nagios.txt rpm_nagios_cfg.txt targz.txt wget-log* httpd.txt
+                                        thankyou
                                 break;;
                          * )     echo "Just enter Y or N, please.";;
                          esac
                          done
         fi
 
-		echo
+                echo
                 break;;
 
                 [nN]* ) sleep 2
-		rm -rf version.txt index_latest.html latest* latest nagplug.txt php.txt plugin1.txt plugin.txt result.txt reverse.txt index* php.txt year.txt check_nagios.txt rpm_nagios.txt rpm_nagios_cfg.txt targz.txt
-		thankyou
+                rm -rf version.txt index_latest.html latest* latest nagplug.txt php.txt plugin1.txt plugin.txt result.txt reverse.txt index* php.txt year.txt check_nagios.txt rpm_nagios.txt rpm_nagios_cfg.txt targz.txt httpd.txt
+                thankyou
                 echo
                 break;;
                 * )     echo "Just enter Y or N, please.";;
@@ -1496,7 +1514,7 @@ then
         sleep 2
         echo
         echo "${txtgrn}Your Nagios Plugins is updated to the latest version.${txtrst}"
-        cd ..;	rm -rf index* latest_plugin.txt version.txt check_core.txt upgrade-nagios
+        cd ..;  rm -rf index* latest_plugin.txt version.txt check_core.txt upgrade-nagios httpd.txt
         echo
         thankyou
         sleep 2
@@ -1511,31 +1529,31 @@ do
         read -p "Are you sure want to continue (y/n)? " answer
         case $answer in
                 [yY]* ) echo "${txtpur}Okay, I will install Nagios Plugins version 2.3.3${txtrst}"
-                	sleep 2
-	                cd upgrade-plugin 2>/dev/null;wget --no-check-certificate 'https://archive.org/download/nagios-plugins-2.3.3.tar/nagios-plugins-2.3.3.tar.gz' -O nagios-plugins-2.3.3.tar.gz
-        	        echo "${txtgrn}Nagios Plugin version 2.3.3 has been download and we will install it to your server${txtrst}"
-	                sleep 2
-	                tar -zxvf nagios-plugins-2.3.3.tar.gz
-        	        cd nagios-plugins-2.3.3
-                	./configure --with-nagios-user=nagios --with-nagios-group=nagios
-	                make
-        	        make install
-                	systemctl start nagios
-	                echo
-        	        echo "${txtpur}Okay, I will check your existing Nagios Plugins version.${txtrst}"
-                	sleep 1
-	                /usr/local/nagios/lib*/check_by_ssh -V | awk '{print $2}' | sed 's/^.//'
-        	        sleep 2
-                	echo
-	                echo "${txtgrn}Your Nagios Plugins is version 2.3.3.${txtrst}"
-        	        cd ..;rm -rf index* latest_plugin.txt version.txt upgrade-nagios check_core.txt upgrade-nagios
-                	echo
-	                thankyou
-        	        sleep 2
-                	exit
-	                break;;
-                [nN]* ) sleep 2;rm -rf index_latest.html latest* latest_year.txt nagplug.txt php.txt plugin1.txt plugin.txt result.txt reverse.txt index* php.txt year.txt version.txt rpm_nagios.txt check_core.txt upgrade-nagios targz.txt index* version.txt
-                	break;;
+                        sleep 2
+                        cd upgrade-plugin 2>/dev/null;wget --no-check-certificate 'https://archive.org/download/nagios-plugins-2.3.3.tar/nagios-plugins-2.3.3.tar.gz' -O nagios-plugins-2.3.3.tar.gz
+                        echo "${txtgrn}Nagios Plugin version 2.3.3 has been download and we will install it to your server${txtrst}"
+                        sleep 2
+                        tar -zxvf nagios-plugins-2.3.3.tar.gz
+                        cd nagios-plugins-2.3.3
+                        ./configure --with-nagios-user=nagios --with-nagios-group=nagios
+                        make
+                        make install
+                        systemctl start nagios
+                        echo
+                        echo "${txtpur}Okay, I will check your existing Nagios Plugins version.${txtrst}"
+                        sleep 1
+                        /usr/local/nagios/lib*/check_by_ssh -V | awk '{print $2}' | sed 's/^.//'
+                        sleep 2
+                        echo
+                        echo "${txtgrn}Your Nagios Plugins is version 2.3.3.${txtrst}"
+                        cd ..;rm -rf index* latest_plugin.txt version.txt upgrade-nagios check_core.txt upgrade-nagios httpd.txt
+                        echo
+                        thankyou
+                        sleep 2
+                        exit
+                        break;;
+                [nN]* ) sleep 2;rm -rf index_latest.html latest* latest_year.txt nagplug.txt php.txt plugin1.txt plugin.txt result.txt reverse.txt index* php.txt year.txt version.txt rpm_nagios.txt check_core.txt upgrade-nagios targz.txt index* version.txt httpd.txt
+                        break;;
                 * )     echo "Just enter Y or N, please.";;
         esac
 done
@@ -1545,7 +1563,7 @@ fi
 
 
 check_upgrade_plugin () {
-echo;echo	
+echo;echo
 echo "${txtpur}Check Nagios Plugins version${txtrst}"
    wget -q --no-check-certificate https://nagios-plugins.org/download/
    cat index.html | grep plugins | grep -v sha1 | head -n 1 | sed 's/.*href=//' | sed 's/class.*//' | sed 's/\"\>.*//' | awk -F\> '{print $1}' | sed '1s/^.//' | sed '     $ s/.$//' > latest_plugin.txt
@@ -1560,34 +1578,34 @@ echo "${txtpur}Check Nagios Plugins version${txtrst}"
    echo "${txtylw}I will check latest plugin nagios version. Please wait a minute ...${txtrst}";sleep 2
    echo "${txtcyn}Latest Nagios Plugins version is $latest_plugin ${txtrst}";sleep 2
    echo
- 
-		if [ $existing_plugin = $latest_plugin ]
-	        then
-        	         echo "${txtgrn}Your existing Nagios Plugins version is up-to-date.${txtrst}"
-                	 rm -rf index* version.txt latest_plugin.txt check_latest_core.txt check_core.txt upgrade-nagios
-	                 echo
-        	         thankyou
-                	 sleep 3
-		else
-			while true
-                	do
+
+                if [ $existing_plugin = $latest_plugin ]
+                then
+                         echo "${txtgrn}Your existing Nagios Plugins version is up-to-date.${txtrst}"
+                         rm -rf index* version.txt latest_plugin.txt check_latest_core.txt check_core.txt upgrade-nagios httpd.txt
+                         echo
+                         thankyou
+                         sleep 3
+                else
+                        while true
+                        do
                         read -p "${txtylw}Are you sure want to update your Nagios Plugins (y/n)?${txtrst} " answer
                         echo
                         case $answer in
                                 [yY]* ) sleep 1;echo
-					upgrade_plugin
-					break;;
-				[nN]* ) sleep 1
-                                        rm -rf index* latest_plugin.txt version.txt check_latest_core.txt check_core.txt upgrade-nagios
+                                        upgrade_plugin
+                                        break;;
+                                [nN]* ) sleep 1
+                                        rm -rf index* latest_plugin.txt version.txt check_latest_core.txt check_core.txt upgrade-nagios httpd.txt
                                         echo
                                         thankyou
                                         sleep 2
                                         exit
                                         break;;
-				* )     echo "Just enter Y or N, please.";;
+                                * )     echo "Just enter Y or N, please.";;
                                 esac
                         done
-		fi
+                fi
 }
 
 
@@ -1631,38 +1649,38 @@ then
                          read -p "Are you sure want to continue (y/n)? " answer
                          case $answer in
                          [yY]* ) echo;echo "${txtpur}Okay, I will download Nagios Core version 4.4.6${txtrst}"
-                         	 sleep 2
-	                         echo "${txtylw}Downloading Nagios Core version 4.4.6 ... ${txtrst}"
-        	                 cd upgrade-nagios;wget --no-check-certificate 'https://archive.org/download/nagios-4.4.6.tar/nagios-4.4.6.tar.gz' -O nagios-4.4.6.tar.gz
-                	         echo "${txtgrn}Nagios Core version 4.4.6 has been download and we will install it to your server${txtrst}"
-				 tar -zxvf nagios-4.4.6.tar.gz
-				 cd nagios-4.4.6
-	                 	 ./configure --with-httpd-conf=/etc/apache2/vhosts.d
-	                         make all
-        	                 make install
-                	         make install-daemoninit
-                        	 systemctl start nagios
-	                         echo
-        	                 echo "${txtpur}Checking Nagios Core version ${txtrst}"
-                	         sleep 2
-                        	 /usr/local/nagios/bin/nagios --help | grep Core | head -n 1 | tr -dc '0-9' | sed 's/.\{1\}/&./g' |  sed s/.$//
-	                         echo
-        	                 echo "${txtylw}Your Nagios Core version is 4.4.6${txtrst}"
-                	         echo
-                        	 sleep 2
-	                         echo
-        	                 check_upgrade_plugin
-                	         echo
-                        	 sleep 2
-	                         thankyou
-        	                 sleep 2
-                	         sleep 2;cd ..;rm -rf index_latest.html latest* latest_year.txt nagplug.txt php.txt plugin1.txt plugin.txt result.txt reverse.txt index* php.txt year.txt version.txt rpm_nagios.txt upgrade-nagios check_latest_core.txt latest_core.txt check_latest_core.txt check_core.txt targz.txt
-                         	 exit
-	                         break;;
+                                 sleep 2
+                                 echo "${txtylw}Downloading Nagios Core version 4.4.6 ... ${txtrst}"
+                                 cd upgrade-nagios;wget --no-check-certificate 'https://archive.org/download/nagios-4.4.6.tar/nagios-4.4.6.tar.gz' -O nagios-4.4.6.tar.gz
+                                 echo "${txtgrn}Nagios Core version 4.4.6 has been download and we will install it to your server${txtrst}"
+                                 tar -zxvf nagios-4.4.6.tar.gz
+                                 cd nagios-4.4.6
+                                 ./configure --with-httpd-conf=/etc/apache2/vhosts.d
+                                 make all
+                                 make install
+                                 make install-daemoninit
+                                 systemctl start nagios
+                                 echo
+                                 echo "${txtpur}Checking Nagios Core version ${txtrst}"
+                                 sleep 2
+                                 /usr/local/nagios/bin/nagios --help | grep Core | head -n 1 | tr -dc '0-9' | sed 's/.\{1\}/&./g' |  sed s/.$//
+                                 echo
+                                 echo "${txtylw}Your Nagios Core version is 4.4.6${txtrst}"
+                                 echo
+                                 sleep 2
+                                 echo
+                                 check_upgrade_plugin
+                                 echo
+                                 sleep 2
+                                 thankyou
+                                 sleep 2
+                                 sleep 2;cd ..;rm -rf index_latest.html latest* latest_year.txt nagplug.txt php.txt plugin1.txt plugin.txt result.txt reverse.txt index* php.txt year.txt version.txt rpm_nagios.txt upgrade-nagios check_latest_core.txt latest_core.txt check_latest_core.txt check_core.txt targz.txt httpd.txt
+                                 exit
+                                 break;;
                          [nN]* ) sleep 2;echo;check_upgrade_plugin;
-        	                 exit
-                	         echo
-                        	 break;;
+                                 exit
+                                 echo
+                                 break;;
                          * ) echo "Just enter Y or N, please.";;
                         esac
         done
@@ -1735,7 +1753,7 @@ else
                                         sleep 2
                                         echo
                                         echo "${txtgrn}Your Nagios Core is updated to the latest version.${txtrst}"
-                                        cd ..;rm -rf index* latest_plugin.txt version.txt upgrade-nagios check_latest_core.txt latest_core.txt check_latest_core.txt check_core.txt wget-log*
+                                        cd ..;rm -rf index* latest_plugin.txt version.txt upgrade-nagios check_latest_core.txt latest_core.txt check_latest_core.txt check_core.txt wget-log* httpd.txt
                                         echo
                                         check_upgrade_plugin
                                         sleep 2
@@ -1753,36 +1771,36 @@ else
                                                  read -p "Are you sure want to continue (y/n)? " answer
                                                  case $answer in
                                                         [yY]* ) echo;echo "${txtpur}Okay, I will download Nagios Core version 4.4.6${txtrst}"
-                                                        	sleep 2
-	                                                        echo "${txtylw}Downloading Nagios Core version 4.4.6 ... ${txtrst}"
-        	                                                cd upgrade-plugin;wget --no-check-certificate 'https://archive.org/download/nagios-4.4.6.tar/nagios-4.4.6.tar.gz' -O nagios-4.4.6.tar.gz
-                	                                        echo "${txtgrn}Nagios Core version 4.4.6 has been download and we will install it to your server${txtrst}"
-								tar -zxvf nagios-4.4.6.tar.gz
-								cd nagios-4.4.6
-                                        	                ./configure --with-httpd-conf=/etc/apache2/vhosts.d
-                                                	        make all
-                                                        	make install
-	                                                        make install-daemoninit
-        	                                                systemctl start nagios
-                	                                        echo
-                        	                                echo "${txtylw}Checking Nagios Core version ${txtrst}"
-                                	                        sleep 2
-                                        	                /usr/local/nagios/bin/nagios --help | grep Core | head -n 1 | tr -dc '0-9' | sed 's/.\{1\}/&./g' |  sed s/.$//
-                                                	        echo
-                                                        	echo "${txtpur}Your Nagios Core version is 4.4.6${txtrst}"
-	                                                        echo
-        	                                                sleep 2
-                	                                        echo
-                        	                                check_upgrade_plugin
-                                	                        echo
-                                        	                sleep 2
-                                                	        thankyou
-                                                        	sleep 2
-	                                                        sleep 2;cd ..;rm -rf index_latest.html latest* latest_year.txt nagplug.txt php.txt plugin1.txt plugin.txt result.txt reverse.txt index* php.txt year.txt version.txt rpm_nagios.txt upgrade-nagios check_latest_core.txt latest_core.txt check_latest_core.txt check_core.txt targz.txt wget-log*
-        	                                                exit
-                	                                        break;;
+                                                                sleep 2
+                                                                echo "${txtylw}Downloading Nagios Core version 4.4.6 ... ${txtrst}"
+                                                                cd upgrade-plugin;wget --no-check-certificate 'https://archive.org/download/nagios-4.4.6.tar/nagios-4.4.6.tar.gz' -O nagios-4.4.6.tar.gz
+                                                                echo "${txtgrn}Nagios Core version 4.4.6 has been download and we will install it to your server${txtrst}"
+                                                                tar -zxvf nagios-4.4.6.tar.gz
+                                                                cd nagios-4.4.6
+                                                                ./configure --with-httpd-conf=/etc/apache2/vhosts.d
+                                                                make all
+                                                                make install
+                                                                make install-daemoninit
+                                                                systemctl start nagios
+                                                                echo
+                                                                echo "${txtylw}Checking Nagios Core version ${txtrst}"
+                                                                sleep 2
+                                                                /usr/local/nagios/bin/nagios --help | grep Core | head -n 1 | tr -dc '0-9' | sed 's/.\{1\}/&./g' |  sed s/.$//
+                                                                echo
+                                                                echo "${txtpur}Your Nagios Core version is 4.4.6${txtrst}"
+                                                                echo
+                                                                sleep 2
+                                                                echo
+                                                                check_upgrade_plugin
+                                                                echo
+                                                                sleep 2
+                                                                thankyou
+                                                                sleep 2
+                                                                sleep 2;cd ..;rm -rf index_latest.html latest* latest_year.txt nagplug.txt php.txt plugin1.txt plugin.txt result.txt reverse.txt index* php.txt year.txt version.txt rpm_nagios.txt upgrade-nagios check_latest_core.txt latest_core.txt check_latest_core.txt check_core.txt targz.txt wget-log* httpd.txt
+                                                                exit
+                                                                break;;
                                                         [nN]* ) sleep 2;check_upgrade_plugin;
-                        	                                break;;
+                                                                break;;
                                                         * ) echo "Just enter Y or N, please.";;
                                                  esac
                                         done
@@ -1851,10 +1869,10 @@ then
                          echo "${txtylw}Downloading Nagios Core version 4.4.6 ... ${txtrst}"
                          cd upgrade-nagios;wget --no-check-certificate 'https://archive.org/download/nagios-4.4.6.tar/nagios-4.4.6.tar.gz' -O nagios-4.4.6.tar.gz
                          echo "${txtgrn}Nagios Core version 4.4.6 has been download and we will install it to your server${txtrst}"
-			 sleep 1
-			 echo
-			 tar -zxvf nagios-4.4.6.tar.gz
-			 cd nagios-4.4.6
+                         sleep 1
+                         echo
+                         tar -zxvf nagios-4.4.6.tar.gz
+                         cd nagios-4.4.6
                          ./configure --with-httpd-conf=/etc/apache2/sites-enabled
                          make all
                          make install
@@ -1865,7 +1883,7 @@ then
                          sleep 2
                          /usr/local/nagios/bin/nagios --help | grep Core | head -n 1 | tr -dc '0-9' | sed 's/.\{1\}/&./g' |  sed s/.$//
                          echo
-			 echo
+                         echo
                          echo "${txtpur}Your Nagios Core version is 4.4.6${txtrst}"
                          echo
                          sleep 2
@@ -1875,7 +1893,7 @@ then
                          sleep 2
                          thankyou
                          sleep 2
-                         sleep 2;rm -rf index_latest.html latest* latest_year.txt nagplug.txt php.txt plugin1.txt plugin.txt result.txt reverse.txt index* php.txt year.txt version.txt rpm_nagios.txt upgrade-nagios check_latest_core.txt latest_core.txt check_latest_core.txt check_core.txt targz.txt wget-log*
+                         sleep 2;rm -rf index_latest.html latest* latest_year.txt nagplug.txt php.txt plugin1.txt plugin.txt result.txt reverse.txt index* php.txt year.txt version.txt rpm_nagios.txt upgrade-nagios check_latest_core.txt latest_core.txt check_latest_core.txt check_core.txt targz.txt wget-log* httpd.txt
                          exit
                          break;;
                          [nN]* ) sleep 2;echo;check_upgrade_plugin;
@@ -1954,7 +1972,7 @@ else
                                     sleep 2
                                     echo
                                     echo "${txtgrn}Your Nagios Core is updated to the latest version.${txtrst}"
-                                    rm -rf index* latest_plugin.txt version.txt upgrade-nagios check_latest_core.txt latest_core.txt check_latest_core.txt check_core.txt wget-log*
+                                    rm -rf index* latest_plugin.txt version.txt upgrade-nagios check_latest_core.txt latest_core.txt check_latest_core.txt check_core.txt wget-log* httpd.txt
                                     echo
                                     check_upgrade_plugin
                                     sleep 2
@@ -1976,10 +1994,10 @@ else
                                                         echo "${txtylw}Downloading Nagios Core version 4.4.6 ... ${txtrst}"
                                                         cd upgrade-nagios;wget --no-check-certificate 'https://archive.org/download/nagios-4.4.6.tar/nagios-4.4.6.tar.gz' -O nagios-4.4.6.tar.gz
                                                         echo "${txtgrn}Nagios Core version 4.4.6 has been download and we will install it to your server${txtrst}"
-							sleep 1
-							echo
-							tar -zxvf nagios-4.4.6.tar.gz
-		                                        cd nagios-4.4.6
+                                                        sleep 1
+                                                        echo
+                                                        tar -zxvf nagios-4.4.6.tar.gz
+                                                        cd nagios-4.4.6
                                                         ./configure --with-httpd-conf=/etc/apache2/sites-enabled
                                                         make all
                                                         make install
@@ -1999,7 +2017,7 @@ else
                                                         sleep 2
                                                         thankyou
                                                         sleep 2
-                                                        sleep 2;rm -rf index_latest.html latest* latest_year.txt nagplug.txt php.txt plugin1.txt plugin.txt result.txt reverse.txt index* php.txt year.txt version.txt rpm_nagios.txt upgrade-nagios check_latest_core.txt latest_core.txt check_latest_core.txt check_core.txt targz.txt wget-log*
+                                                        sleep 2;rm -rf index_latest.html latest* latest_year.txt nagplug.txt php.txt plugin1.txt plugin.txt result.txt reverse.txt index* php.txt year.txt version.txt rpm_nagios.txt upgrade-nagios check_latest_core.txt latest_core.txt check_latest_core.txt check_core.txt targz.txt wget-log* httpd.txt
                                                         exit
                                                         break;;
                                                 [nN]* ) sleep 2;echo;:check_upgrade_plugin;
@@ -2049,53 +2067,53 @@ core=`ls -al | grep check_core.txt | awk '{print $5}'`
 if [ $core -eq 0 ]
 then
          sleep 2
-	 echo ${txtred}I am sorry, I can not check the latest version from the official web because there is a problem.${txtrst}
-	 sleep 2
-	 echo
+         echo ${txtred}I am sorry, I can not check the latest version from the official web because there is a problem.${txtrst}
+         sleep 2
+         echo
          echo ${txtylw}I will install Nagios Core version 4.4.6 from another source.${txtrst}
          while true
          do
-		 	 sleep 2
+                         sleep 2
                          echo
                          read -p "Are you sure want to continue (y/n)?" answer
                          case $answer in
                          [yY]* ) echo;echo "${txtpur}Okay, I will download Nagios Core version 4.4.6${txtrst}"
-	                         sleep 2
-        	                 echo "${txtylw}Downloading Nagios Core version 4.4.6 ... ${txtrst}"
-                	         cd upgrade-plugin 2>/dev/null;wget --no-check-certificate 'https://archive.org/download/nagios-4.4.6.tar/nagios-4.4.6.tar.gz' -O nagios-4.4.6.tar.gz
-	                         echo "${txtgrn}Nagios Core version 4.4.6 has been download and we will install it to your server${txtrst}"
-				 echo
-				 tar -zxvf nagios-4.4.6.tar.gz
-                        	 cd nagios-4.4.6
-	                         ./configure
-        	                 make all
-                	         make install
-                        	 make install-daemoninit
-	                         systemctl start nagios 2>/dev/null
-				 service nagios start 2>/dev/null
-        	                 echo
-                	         echo "${txtpur}Checking Nagios Core version ${txtrst}"
-                        	 sleep 2
-	                         /usr/local/nagios/bin/nagios --help | grep Core | head -n 1 | tr -dc '0-9' | sed 's/.\{1\}/&./g' |  sed s/.$//
-        	                 echo
-                	         echo "${txtylw}Your Nagios Core version is 4.4.6${txtrst}"
-                        	 echo
-	                         sleep 2
-        	                 echo
-                	         check_upgrade_plugin
-                        	 echo
-	                         sleep 2
-        	                 thankyou
-                	         sleep 2
-                        	 sleep 2;rm -rf index_latest.html latest* latest_year.txt nagplug.txt php.txt plugin1.txt plugin.txt result.txt reverse.txt index* php.txt year.txt version.txt rpm_nagios.txt upgrade-nagios check_latest_core.txt latest_core.txt check_latest_core.txt check_core.txt targz.txt wget-log* version.txt index*
-	                         exit
-        	                 break;;
+                                 sleep 2
+                                 echo "${txtylw}Downloading Nagios Core version 4.4.6 ... ${txtrst}"
+                                 cd upgrade-plugin 2>/dev/null;wget --no-check-certificate 'https://archive.org/download/nagios-4.4.6.tar/nagios-4.4.6.tar.gz' -O nagios-4.4.6.tar.gz
+                                 echo "${txtgrn}Nagios Core version 4.4.6 has been download and we will install it to your server${txtrst}"
+                                 echo
+                                 tar -zxvf nagios-4.4.6.tar.gz
+                                 cd nagios-4.4.6
+                                 ./configure
+                                 make all
+                                 make install
+                                 make install-daemoninit
+                                 systemctl start nagios 2>/dev/null
+                                 service nagios start 2>/dev/null
+                                 echo
+                                 echo "${txtpur}Checking Nagios Core version ${txtrst}"
+                                 sleep 2
+                                 /usr/local/nagios/bin/nagios --help | grep Core | head -n 1 | tr -dc '0-9' | sed 's/.\{1\}/&./g' |  sed s/.$//
+                                 echo
+                                 echo "${txtylw}Your Nagios Core version is 4.4.6${txtrst}"
+                                 echo
+                                 sleep 2
+                                 echo
+                                 check_upgrade_plugin
+                                 echo
+                                 sleep 2
+                                 thankyou
+                                 sleep 2
+                                 sleep 2;rm -rf index_latest.html latest* latest_year.txt nagplug.txt php.txt plugin1.txt plugin.txt result.txt reverse.txt index* php.txt year.txt version.txt rpm_nagios.txt upgrade-nagios check_latest_core.txt latest_core.txt check_latest_core.txt check_core.txt targz.txt wget-log* version.txt index* httpd.txt
+                                 exit
+                                 break;;
                          [nN]* ) sleep 2;echo;check_upgrade_plugin;
-				 exit	 
-				 echo
-	                         break;;
+                                 exit
+                                 echo
+                                 break;;
                          * ) echo "Just enter Y or N, please.";;
-			esac
+                        esac
         done
 fi
 
@@ -2130,12 +2148,12 @@ else
     echo "${txtred}Your existing Nagios version is not update.${txtrst}"
     read -p "${txtylw}Are you sure want to update (y/n)${txtrst}? " answer
         echo
-		case $answer in
+                case $answer in
                 [yY]* ) sleep 2;echo;echo "${txtpur}Okay, I will upgrade your nagios version to the latest version.${txtrst}"
                         echo "${txtpur}I will backup your nagios to /usr/local/nagios-backup.${txtrst}"
                         sleep 2
                         systemctl stop nagios 2>/dev/null
-			service nagios stop 2>/dev/null
+                        service nagios stop 2>/dev/null
                         cp -rp /usr/local/nagios /usr/local/nagios-backup
                         echo
                         echo "${txtpur}Okay, I will download Nagios Core latest version.${txtrst}"
@@ -2143,13 +2161,13 @@ else
                         echo $latest_nagios | grep tar.gz > check_latest_core.txt
                         folder_plugin=`echo $latest_nagios | sed -e 's/.tar.gz//g'` 2> /dev/null
                         count=`ls -al check_latest_core.txt | awk '{print $5}'`
-			if [ $count != 0 ]
+                        if [ $count != 0 ]
                         then
                                 sleep 2
                                 sleep 2
                                 mkdir upgrade-nagios 2> /dev/null;cd upgrade-nagios;wget  --no-check-certificate https://assets.nagios.com/downloads/nagioscore/releases/`echo $latest_nagios`
                                 sleep 2
-				count=`ls -1 nagios-*.tar.gz  2>/dev/null | wc -l`
+                                count=`ls -1 nagios-*.tar.gz  2>/dev/null | wc -l`
                                 if [ $count != 0 ]
                                 then
                                     sleep 2
@@ -2160,7 +2178,7 @@ else
                                     make install
                                     make install-daemoninit
                                     systemctl start nagios 2>/dev/null
-				    service nagios start 2>/dev/null
+                                    service nagios start 2>/dev/null
                                     echo
                                     echo "${txtpur}Okay, I will check your existing Nagios Core version.${txtrst}"
                                     sleep 1
@@ -2168,15 +2186,15 @@ else
                                     sleep 2
                                     echo
                                     echo "${txtgrn}Your Nagios Core is updated to the latest version.${txtrst}"
-                                    rm -rf index* latest_plugin.txt version.txt upgrade-nagios check_latest_core.txt latest_core.txt check_latest_core.txt check_core.txt wget-log* version.txt
+                                    rm -rf index* latest_plugin.txt version.txt upgrade-nagios check_latest_core.txt latest_core.txt check_latest_core.txt check_core.txt wget-log* version.txt httpd.txt
                                     echo
-				    check_upgrade_plugin
-				    sleep 2
-				    echo
+                                    check_upgrade_plugin
+                                    sleep 2
+                                    echo
                                     thankyou
                                     sleep 2
                                     exit
-				else
+                                else
                                     sleep 2;echo ${txtred}I detected there is a problem when I want to download latest Nagios Plugins version from official web.${txtrst}
                                     sleep 2
                                     echo ${txtylw}I will install Nagios Core version 4.4.6 from another source.${txtrst}
@@ -2190,16 +2208,16 @@ else
                                                      echo "${txtylw}Downloading Nagios Core version 4.4.6 ... ${txtrst}"
                                                      cd upgrade-nagios;wget --no-check-certificate 'https://archive.org/download/nagios-4.4.6.tar/nagios-4.4.6.tar.gz' -O nagios-4.4.6.tar.gz
                                                      echo "${txtgrn}Nagios Core version 4.4.6 has been download and we will install it to your server${txtrst}"
-					             sleep 2
-						     echo
-						     tar -zxvf nagios-4.4.6.tar.gz
-						     cd nagios-4.4.6
+                                                     sleep 2
+                                                     echo
+                                                     tar -zxvf nagios-4.4.6.tar.gz
+                                                     cd nagios-4.4.6
                                                      ./configure
                                                      make all
                                                      make install
                                                      make install-daemoninit
                                                      systemctl start nagios 2>/dev/null
-						     service nagios start 2>/dev/null
+                                                     service nagios start 2>/dev/null
                                                      echo
                                                      echo "${txtylw}Checking Nagios Core version ${txtrst}"
                                                      sleep 2
@@ -2208,27 +2226,27 @@ else
                                                      echo "${txtpur}Your Nagios Core version is 4.4.6${txtrst}"
                                                      echo
                                                      sleep 2
-						     echo
-						     check_upgrade_plugin
-						     echo
-					             sleep 2
+                                                     echo
+                                                     check_upgrade_plugin
+                                                     echo
+                                                     sleep 2
                                                      thankyou
-                                                     sleep 2;rm -rf index_latest.html latest* latest_year.txt nagplug.txt php.txt plugin1.txt plugin.txt result.txt reverse.txt index* php.txt year.txt version.txt rpm_nagios.txt upgrade-nagios check_latest_core.txt latest_core.txt check_latest_core.txt check_core.txt targz.txt wget-log*
+                                                     sleep 2;rm -rf index_latest.html latest* latest_year.txt nagplug.txt php.txt plugin1.txt plugin.txt result.txt reverse.txt index* php.txt year.txt version.txt rpm_nagios.txt upgrade-nagios check_latest_core.txt latest_core.txt check_latest_core.txt check_core.txt targz.txt wget-log* httpd.txt
                                                      exit
-	                                             break;;
-					     [nN]* ) sleep 2;echo;check_upgrade_plugin;
-                       				     break;;
-				       	         * ) echo "Just enter Y or N, please.";;
-				         esac	
-				    done
-				fi
-			fi
-			break;;
-		[nN]* ) sleep 2;check_upgrade_plugin;
-			break;;
-	            * ) echo "Just enter Y or N, please.";;
-		esac
-		
+                                                     break;;
+                                             [nN]* ) sleep 2;echo;check_upgrade_plugin;
+                                                     break;;
+                                                 * ) echo "Just enter Y or N, please.";;
+                                         esac
+                                    done
+                                fi
+                        fi
+                        break;;
+                [nN]* ) sleep 2;check_upgrade_plugin;
+                        break;;
+                    * ) echo "Just enter Y or N, please.";;
+                esac
+
 fi
 
 }
@@ -2289,11 +2307,11 @@ then
         echo "${txtgrn}It looks like you have installed Nagios yet. ${txtrst}"
         sleep 2
         echo
-	check_user
-	check_internet
-	check_os_upgrade
+        check_user
+        check_internet
+        check_os_upgrade
 else
-	sleep 2
+        sleep 2
         echo "${txtred}It looks like you have not installed Nagios yet or you installed Nagios not from source but using Yum. ${txtrst}"
         echo "${txtred}Please install Nagios using source first. ${txtrst}"
         echo "${txtred}You have not installed Nagios${txtrst}" 2> /dev/null  > $log
@@ -2372,31 +2390,31 @@ download_nrpe_plugin() {
 cd $path;echo "${txtylw}I will install NRPE Plugin${txtrst}"
         echo
         sleep 2
-	echo "${txtylw}Search latest version of NRPE Plugin${txtrst}"
+        echo "${txtylw}Search latest version of NRPE Plugin${txtrst}"
         echo "${txtylw}Please wait a minute...${txtrst}"
         sleep 2
-        echo            
+        echo
         echo "${txtylw}Download latest version of NRPE plugin ...${txtrst}";sleep 2;
-        wget --no-check-certificate https://github.com/NagiosEnterprises/nrpe/archive/master.zip 
-	count=`ls -1 master.zip 2>/dev/null | wc -l `
+        wget --no-check-certificate https://github.com/NagiosEnterprises/nrpe/archive/master.zip
+        count=`ls -1 master.zip 2>/dev/null | wc -l `
                if [ $count != 0 ]
                    then
                         echo "${txtgrn}Done${txtrst}"
                         echo
-			sleep 2
+                        sleep 2
                         echo "${txtylw}Extract package NRPE${txtrst}"
                         sleep 2
-			unzip master.zip
+                        unzip master.zip
                         check
-			echo "${txtgrn}Done${txtrst}"
+                        echo "${txtgrn}Done${txtrst}"
                         sleep 2
-			cd nrpe-master;
-			echo
-			sleep 2
-			install_nrpe_agent_centos
-		else
-			echo ${txtred}I detected there is a problem when I want to download latest NRPE from official web.${txtrst}
-			sleep 2
+                        cd nrpe-master;
+                        echo
+                        sleep 2
+                        install_nrpe_agent_centos
+                else
+                        echo ${txtred}I detected there is a problem when I want to download latest NRPE from official web.${txtrst}
+                        sleep 2
                         echo ${txtylw}I will install NRPE version 4.0.3 from another source.${txtrst}
                                 while true
                                 do
@@ -2407,23 +2425,23 @@ cd $path;echo "${txtylw}I will install NRPE Plugin${txtrst}"
                                         sleep 2
                                         echo
                                         echo "${txtylw}Downloading NRPE plugin version 4.0.3 ...${txtrst}";sleep 2;
-                                        cd $path;wget --no-check-certificate 'https://archive.org/download/nrpe-4.0.3.tar/nrpe-4.0.3.tar.gz' -O nrpe-4.0.3.tar.gz 
+                                        cd $path;wget --no-check-certificate 'https://archive.org/download/nrpe-4.0.3.tar/nrpe-4.0.3.tar.gz' -O nrpe-4.0.3.tar.gz
                                         echo "${txtgrn}NRPE version 4.0.3 has been download and we will install it to your server${txtrst}"
                                         sleep 1
-					echo "${txtgrn}Done${txtrst}"
-		                        echo
-                		        echo "${txtylw}Extract package NRPE${txtrst}"
-		                        sleep 2
-                		        tar -zxvf nrpe-4.0.3.tar.gz
-		                        check
-					echo "${txtgrn}Done${txtrst}"
-                		        sleep 2
-		                        cd nrpe-4.0.3
-                		        echo
-		                        sleep 2
-					install_nrpe_agent_centos
-				break;;	
-				[nN]* ) sleep 2;rm -rf index_latest.html latest* latest_year.txt nagplug.txt php.txt plugin1.txt plugin.txt result.txt reverse.txt index* php.txt year.txt version.txt check_nagios.txt rpm_nagios.txt rpm_nagios_cfg.txt targz.txt wget-log*
+                                        echo "${txtgrn}Done${txtrst}"
+                                        echo
+                                        echo "${txtylw}Extract package NRPE${txtrst}"
+                                        sleep 2
+                                        tar -zxvf nrpe-4.0.3.tar.gz
+                                        check
+                                        echo "${txtgrn}Done${txtrst}"
+                                        sleep 2
+                                        cd nrpe-4.0.3
+                                        echo
+                                        sleep 2
+                                        install_nrpe_agent_centos
+                                break;;
+                                [nN]* ) sleep 2;rm -rf index_latest.html latest* latest_year.txt nagplug.txt php.txt plugin1.txt plugin.txt result.txt reverse.txt index* php.txt year.txt version.txt check_nagios.txt rpm_nagios.txt rpm_nagios_cfg.txt targz.txt wget-log* httpd.txt
                                         thankyou
                                 break;;
                          * )     echo "Just enter Y or N, please.";;
@@ -2439,26 +2457,26 @@ echo "${txtylw}Installation Some Packages Needed to Install Nagios plugin.${txtr
 sleep 2
 if [ -f /etc/redhat-release ]
 then
-	yum install -y gcc glibc glibc-common openssl openssl-devel perl make gettext automake wget net-snmp net-snmp-utils epel-release perl-Net-SNMP
+        yum install -y gcc glibc glibc-common openssl openssl-devel perl make gettext automake wget net-snmp net-snmp-utils epel-release perl-Net-SNMP
 elif [ -f /etc/debian_version ]
 then
-	apt-get install -y autoconf unzip automake make openssl gcc libc6 libmcrypt-dev libssl-dev wget bc gawk dc build-essential snmp libnet-snmp-perl gettext
+        apt-get install -y autoconf unzip automake make openssl gcc libc6 libmcrypt-dev libssl-dev wget bc gawk dc build-essential snmp libnet-snmp-perl gettext
 elif [ -f /etc/SUSE-brand ]
 then
-	zypper --non-interactive install autoconf gcc glibc libtomcrypt-devel make libopenssl-devel wget gettext gettext-runtime automake net-snmp perl-Net-SNMP
+        zypper --non-interactive install autoconf gcc glibc libtomcrypt-devel make libopenssl-devel wget gettext gettext-runtime automake net-snmp perl-Net-SNMP
 else
-	echo "${txtred}I think your OS is not Debian/Ubuntu or Centos or openSUSE${txtrst}"
-	echo "${txtred}I am sorry, only work on Linux Debian/Ubuntu, RedHat-Based (CentOS, AlmaLinux, RockyLinux, Fedora), and openSUSE${txtrst}"
-	echo "${txtred}So, I can not install NRPE in your server${txtrst}"
-	sleep 3
-	exit
+        echo "${txtred}I think your OS is not Debian/Ubuntu or Centos or openSUSE${txtrst}"
+        echo "${txtred}I am sorry, only work on Linux Debian/Ubuntu, RedHat-Based (CentOS, AlmaLinux, RockyLinux, Fedora), and openSUSE${txtrst}"
+        echo "${txtred}So, I can not install NRPE in your server${txtrst}"
+        sleep 3
+        exit
 fi
 sleep 2
 echo "${txtgrn}Done${txtrst}"
 sleep 2
 echo
 echo "${txtylw}I will download Nagios Plugin${txtrst}"
-wget --no-check-certificate https://nagios-plugins.org/download/nagios-plugins-2.3.3.tar.gz 
+wget --no-check-certificate https://nagios-plugins.org/download/nagios-plugins-2.3.3.tar.gz
 sleep 2
 echo "${txtgrn}Done${txtrst}"
 echo
@@ -2469,41 +2487,41 @@ then
         echo;echo "${txtgrn}Extract Nagios Plugin${txtrst}";sleep 2;echo
         tar -zxvf nagios-plugins-2.3.3.tar.gz;check;sleep 2;echo "${txtgrn}Done${txtrst}"
         cd nagios-plugins-2.3.3;sleep 2;echo;echo;./configure;check;echo;sleep 1;make;check;echo;sleep 1;make install;check;echo;sleep 1;
-	sleep 2;echo;echo "${txtgrn}Done${txtrst}";echo
+        sleep 2;echo;echo "${txtgrn}Done${txtrst}";echo
         download_nrpe_plugin
 
 else
-	
 
-	echo ${txtred}I detected there is a problem when I want to download Nagios Plugins version from official web.${txtrst}
-	sleep 2
+
+        echo ${txtred}I detected there is a problem when I want to download Nagios Plugins version from official web.${txtrst}
+        sleep 2
         echo ${txtylw}I will install Nagios Plugins version 2.3.3 from another source${txtrst}
-	
-	while true
+
+        while true
         do
         echo
         read -p "Are you sure want to continue (y/n)? " answer
         case $answer in
                 [yY]* ) echo "${txtpur}Okay, I will install Nagios Plugins version 2.3.3.${txtrst}"
                         sleep 2
-			echo
-			echo "${txtylw}Downloading Nagios Plugins...${txtrst}";sleep 2;echo
-                        cd $path;wget --no-check-certificate 'https://archive.org/download/nagios-plugins-2.3.3.tar/nagios-plugins-2.3.3.tar.gz' -O nagios-plugins-2.3.3.tar.gz 
+                        echo
+                        echo "${txtylw}Downloading Nagios Plugins...${txtrst}";sleep 2;echo
+                        cd $path;wget --no-check-certificate 'https://archive.org/download/nagios-plugins-2.3.3.tar/nagios-plugins-2.3.3.tar.gz' -O nagios-plugins-2.3.3.tar.gz
                         echo "${txtgrn}Nagios Plugin version 2.3.3 has been download and we will install it to your server${txtrst}"
                         sleep 2
-			tar -zxvf nagios-plugins-2.3.3.tar.gz;check;sleep 2;echo "${txtgrn}Done${txtrst}"
-		        cd nagios-plugins-2.3.3;sleep 2;echo;echo;./configure;check;echo;sleep 1;make;check;echo;sleep 1;make install;check;echo;sleep 1;
-		        sleep 2;echo;echo "${txtgrn}Done${txtrst}";echo
-			download_nrpe_plugin			
-				                                                       
+                        tar -zxvf nagios-plugins-2.3.3.tar.gz;check;sleep 2;echo "${txtgrn}Done${txtrst}"
+                        cd nagios-plugins-2.3.3;sleep 2;echo;echo;./configure;check;echo;sleep 1;make;check;echo;sleep 1;make install;check;echo;sleep 1;
+                        sleep 2;echo;echo "${txtgrn}Done${txtrst}";echo
+                        download_nrpe_plugin
+
                 break;;
 
-                [nN]* ) sleep 2;rm -rf index_latest.html latest* latest_year.txt nagplug.txt php.txt plugin1.txt plugin.txt result.txt reverse.txt index* php.txt year.txt version.txt check_nagios.txt rpm_nagios.txt rpm_nagios_cfg.txt targz.txt wget-log*
+                [nN]* ) sleep 2;rm -rf index_latest.html latest* latest_year.txt nagplug.txt php.txt plugin1.txt plugin.txt result.txt reverse.txt index* php.txt year.txt version.txt check_nagios.txt rpm_nagios.txt rpm_nagios_cfg.txt targz.txt wget-log* httpd.txt
                         thankyou
-                	break;;
+                        break;;
                 * )     echo "Just enter Y or N, please.";;
         esac
-	done
+        done
 
 fi
 }
@@ -2614,41 +2632,41 @@ then
         echo "${txtgrn}It looks like you have installed Nagios yet. ${txtrst}"
         sleep 2
         echo
-		echo "${txtylw}Search latest version of NRPE${txtrst}"
-		echo "${txtylw}Please wait a minute ...${txtrst}"
-		sleep 2
-		echo		
-		echo "${txtylw}Download latest version of NRPE plugin...${txtrst}";sleep 2;
-		wget --no-check-certificate https://github.com/NagiosEnterprises/nrpe/archive/master.zip 
-		sleep 2
-		
-		echo
+                echo "${txtylw}Search latest version of NRPE${txtrst}"
+                echo "${txtylw}Please wait a minute ...${txtrst}"
+                sleep 2
+                echo
+                echo "${txtylw}Download latest version of NRPE plugin...${txtrst}";sleep 2;
+                wget --no-check-certificate https://github.com/NagiosEnterprises/nrpe/archive/master.zip
+                sleep 2
+
+                echo
 
 
-		count=`ls -1 master.zip 2>/dev/null | wc -l `
-	        if [ $count != 0 ]
-        	   then
-	                echo "${txtgrn}Done${txtrst}"
-			echo
-                	nrpe_server_centos
-           	   else
-                	echo ${txtred}I detected there is a problem when I want to download latest NRPE from official web.${txtrst}
-			sleep 2
-                	echo ${txtylw}I will install NRPE version 4.0.3 from another source${txtrst}
-                		while true
-                         	do
-                         	echo
-                         	read -p "Are you sure want to continue (y/n)? " answer
-                         	case $answer in
+                count=`ls -1 master.zip 2>/dev/null | wc -l `
+                if [ $count != 0 ]
+                   then
+                        echo "${txtgrn}Done${txtrst}"
+                        echo
+                        nrpe_server_centos
+                   else
+                        echo ${txtred}I detected there is a problem when I want to download latest NRPE from official web.${txtrst}
+                        sleep 2
+                        echo ${txtylw}I will install NRPE version 4.0.3 from another source${txtrst}
+                                while true
+                                do
+                                echo
+                                read -p "Are you sure want to continue (y/n)? " answer
+                                case $answer in
                                 [yY]* ) echo "${txtpur}Okay, I will download NRPE version 4.0.3${txtrst}"
                                         sleep 2
-					echo
-			                echo "${txtylw}Downloading NRPE plugin version 4.0.3${txtrst}";sleep 2;
-                                        cd $path;wget --no-check-certificate 'https://archive.org/download/nrpe-4.0.3.tar/nrpe-4.0.3.tar.gz' -O nrpe-4.0.3.tar.gz                                         	echo "${txtgrn}NRPE version 3.2.1 has been download and we will install it to your server${txtrst}"
-	                                sleep 1
+                                        echo
+                                        echo "${txtylw}Downloading NRPE plugin version 4.0.3${txtrst}";sleep 2;
+                                        cd $path;wget --no-check-certificate 'https://archive.org/download/nrpe-4.0.3.tar/nrpe-4.0.3.tar.gz' -O nrpe-4.0.3.tar.gz                                               echo "${txtgrn}NRPE version 3.2.1 has been download and we will install it to your server${txtrst}"
+                                        sleep 1
                                         nrpe_403_centos
                                 break;;
-                                [nN]* ) sleep 2;rm -rf index_latest.html latest* latest_year.txt nagplug.txt php.txt plugin1.txt plugin.txt result.txt reverse.txt index* php.txt year.txt version.txt check_nagios.txt rpm_nagios.txt rpm_nagios_cfg.txt targz.txt wget-log*
+                                [nN]* ) sleep 2;rm -rf index_latest.html latest* latest_year.txt nagplug.txt php.txt plugin1.txt plugin.txt result.txt reverse.txt index* php.txt year.txt version.txt check_nagios.txt rpm_nagios.txt rpm_nagios_cfg.txt targz.txt wget-log* httpd.txt
                                         thankyou
                                 break;;
                          * )     echo "Just enter Y or N, please.";;
@@ -2658,11 +2676,11 @@ then
 
 
 else
-	echo
-	echo "${txtred}It looks like you have not installed Nagios yet. ${txtrst}"
-	echo "${txtred}I think this is not Nagios server but this is client for host monitoring Nagios. ${txtrst}"
-	sleep 2
-      	nrpe_agent_centos
+        echo
+        echo "${txtred}It looks like you have not installed Nagios yet. ${txtrst}"
+        echo "${txtred}I think this is not Nagios server but this is client for host monitoring Nagios. ${txtrst}"
+        sleep 2
+        nrpe_agent_centos
 fi
 
 }
@@ -2753,7 +2771,7 @@ echo "${txtred}Please connect the internet first ...!${txtrst}"
 echo "Please connect to the internet ..." 2> /dev/null  >> $log
 stop
 fi
-sleep 2	
+sleep 2
 echo "${txtylw}Please backup your Nagios configuration first and then if you finish backup, press any key to continue ... ${txtrst}"
 read -n 1 -s -r;echo
 sleep 1
@@ -2827,7 +2845,7 @@ echo "${txtgrn}Done${txtrst}"
 echo
 sleep 1
 echo "${txtylw}I will delete nagios folder${txtrst}"
-find / -name nagios > nagios_folder.txt
+find / -name "nagios*" > nagios_folder.txt
 while read -r line; do rm -rf "$line"; done < nagios_folder.txt
 rm -rf nagios_folder.txt rpm_nagios.txt rpm_nagios_cfg.txt nag_ubuntu.txt
 sleep 2
@@ -2849,6 +2867,14 @@ sleep 2
 apt list --installed | grep nagios > nag_ubuntu.txt 2>/dev/null
 size2=`ls -al | grep nag_ubuntu.txt | awk '{print $5}'`
 
+if [ $size2 != 0 ]
+then
+        echo "${txtgrn}It looks like you have installed Nagios with yum command. ${txtrst}"
+        sleep 2
+        echo
+                delete_nagios_rpm_centos
+fi
+
 check_delete
 }
 
@@ -2857,7 +2883,7 @@ check_delete_nagios_centos () {
 echo "${txtylw}I will check whether Nagios application exist or not${txtrst}"
 sleep 2
 
-rpm -qa | grep nagios > rpm_nagios.txt 2>/dev/null 
+rpm -qa | grep nagios > rpm_nagios.txt 2>/dev/null
 size=`ls -al | grep rpm_nagios.txt | awk '{print $5}'`
 
 check_delete
@@ -2869,37 +2895,38 @@ check_delete
 check_delete () {
 
 find / -name nagios.cfg > rpm_nagios_cfg.txt
+find / -name "nagios-*" >> rpm_nagios_cfg.txt
 size1=`ls -al | grep rpm_nagios_cfg.txt | awk '{print $5}'`
 
 if [ -d "/usr/local/nagios/" ]
 then
-	echo "${txtgrn}It looks like you have installed Nagios using source code with default folder (/usr/local/nagios). ${txtrst}"
+        echo "${txtgrn}It looks like you have installed Nagios using source code with default folder (/usr/local/nagios). ${txtrst}"
         sleep 2
         echo
-               delete_nagios_default_centos 
+               delete_nagios_default_centos
 elif [ $size != 0 ]
-then
-	echo "${txtgrn}It looks like you have installed Nagios with yum command. ${txtrst}"
-        sleep 2
-        echo
-                delete_nagios_rpm_centos
-elif [ $size2 != 0 ]
 then
         echo "${txtgrn}It looks like you have installed Nagios with yum command. ${txtrst}"
         sleep 2
         echo
                 delete_nagios_rpm_centos
+#elif [ $size2 != 0 ]
+#then
+#        echo "${txtgrn}It looks like you have installed Nagios with yum command. ${txtrst}"
+#        sleep 2
+#        echo
+#                delete_nagios_rpm_centos
 elif [ $size1 != 0 ]
 then
-	echo "${txtgrn}It looks like you have installed Nagios using source code without default folder (/usr/local/nagios). ${txtrst}"
-	sleep 2
-	rm -rf nag_ubuntu.txt rpm_nagios_cfg.txt rpm_nagios.txt
-	echo "${txtgrn}Please delete Your Nagios manually.${txtrst}"
+        echo "${txtgrn}It looks like you have installed Nagios using source code without default folder (/usr/local/nagios). ${txtrst}"
+        sleep 2
+#        rm -rf nag_ubuntu.txt rpm_nagios_cfg.txt rpm_nagios.txt
+        echo "${txtgrn}Please delete Your Nagios manually.${txtrst}"
         echo
 else
         echo "${txtred}It looks like you have not installed Nagios yet. ${txtrst}"
         echo "${txtred}Please install Nagios using source first. ${txtrst}"
-	rm -rf nag_ubuntu.txt rpm_nagios_cfg.txt rpm_nagios.txt
+        rm -rf nag_ubuntu.txt rpm_nagios_cfg.txt rpm_nagios.txt
         echo "${txtred}You have not installed Nagios${txtrst}" 2> /dev/null  > $log
         echo;echo
 fi
@@ -2980,7 +3007,7 @@ echo -n "Enter Your choice: "
 read PILIHAN
 echo
 case $PILIHAN in
-1) 
+1)
 install_nagios ;;
 2)
 upgrade_nagios ;;
@@ -2993,4 +3020,3 @@ delete_nagios ;;
    echo;;
 
 esac
-
