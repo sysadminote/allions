@@ -115,7 +115,7 @@ echo "Nagios Main Configuration File ' /usr/local/nagios/etc/nagios.cfg '" 2> /d
 echo "Nagios Object configuration Files   : ${txtcyn}/usr/local/nagios/etc/objects/${txtrst}"
 echo "Nagios Object configuration Files: /usr/local/nagios/etc/objects/ '" 2> /dev/null  >> $log
 echo "Nagios Apache Configuration File    : ${txtcyn}/etc/httpd/conf.d/nagios.conf${txtrst} ${txtrst} (For Redhat Based: CentOS, AlmaLinux, RockyLinux, Fedora)
-                                    : ${txtcyn}/etc/apache2/sites-enabled/nagios.conf${txtrst} ${txtrst} (For Ubuntu/Debian)                                                                                                  : ${txtcyn}/etc/apache2/vhosts.d/nagios.conf${txtrst} (For OpenSUSE)"
+                                    : ${txtcyn}/etc/apache2/sites-enabled/nagios.conf${txtrst} ${txtrst} (For Ubuntu/Debian)                                                                                                     : ${txtcyn}/etc/apache2/vhosts.d/nagios.conf${txtrst} (For OpenSUSE)"
 echo "Nagios Apache Configuration File ' /etc/httpd/conf.d/nagios.conf '" 2> /dev/null  >> $log
 sleep 2
 
@@ -601,7 +601,9 @@ cd $path;wget --no-check-certificate -q https://www.nagios.org/downloads/nagios-
 
 
 ############ if fails to find the last version, download version 4.4.6 ################
-latest_nagios=`cat index.html* 2>/dev/null  | grep "assets.nagios.com/downloads/nagioscore/releases" | sed -n '1p' | awk '{print $6}' | sed -e 's/<[^()]*>//g' | sed -e 's/\/[^()]*\///g' | sed -e 's/\"[^()]*\">//g' | sed -e 's/href=//g' `
+#latest_nagios=`cat index.html* 2>/dev/null  | grep "assets.nagios.com/downloads/nagioscore/releases" | sed -n '1p' | awk '{print $6}' | sed -e 's/<[^()]*>//g' | sed -e 's/\/[^()]*\///g' | sed -e 's/\"[^()]*\">//g' | sed -e 's/href=//g' `
+
+latest_nagios=`cat index.html* | grep "assets.nagios.com/downloads/nagioscore/releases" | sed -n '1p' | sed 's/^.*noopener/noopener/' | cut -f1 -d"<" | sed 's/noopener">//g' | tr '[:upper:]' '[:lower:]'`
 
 echo $latest_nagios | grep tar.gz > targz.txt
 
@@ -718,7 +720,9 @@ cd $path;wget --no-check-certificate -q https://www.nagios.org/downloads/nagios-
 
 
 ############ if fails to find the last version, download version 4.4.6 ################
-latest_nagios=`cat index.html* 2>/dev/null  | grep "assets.nagios.com/downloads/nagioscore/releases" | sed -n '1p' | awk '{print $6}' | sed -e 's/<[^()]*>//g' | sed -e 's/\/[^()]*\///g' | sed -e 's/\"[^()]*\">//g' | sed -e 's/href=//g' `
+#latest_nagios=`cat index.html* 2>/dev/null  | grep "assets.nagios.com/downloads/nagioscore/releases" | sed -n '1p' | awk '{print $6}' | sed -e 's/<[^()]*>//g' | sed -e 's/\/[^()]*\///g' | sed -e 's/\"[^()]*\">//g' | sed -e 's/href=//g' `
+
+latest_nagios=`cat index.html* | grep "assets.nagios.com/downloads/nagioscore/releases" | sed -n '1p' | sed 's/^.*noopener/noopener/' | cut -f1 -d"<" | sed 's/noopener">//g' | tr '[:upper:]' '[:lower:]'`
 
 
 version=`echo $latest_nagios | sed 's/.*-//' | sed 's/t.*//' | sed 's/.$//'`
@@ -918,7 +922,9 @@ cd $path;wget --no-check-certificate -q https://www.nagios.org/downloads/nagios-
 
 
 ############ if fails to find the last version, download version 4.4.6 ################
-latest_nagios=`cat index.html* 2>/dev/null  | grep "assets.nagios.com/downloads/nagioscore/releases" | sed -n '1p' | awk '{print $6}' | sed -e 's/<[^()]*>//g' | sed -e 's/\/[^()]*\///g' | sed -e 's/\"[^()]*\">//g' | sed -e 's/href=//g' `
+#latest_nagios=`cat index.html* 2>/dev/null  | grep "assets.nagios.com/downloads/nagioscore/releases" | sed -n '1p' | awk '{print $6}' | sed -e 's/<[^()]*>//g' | sed -e 's/\/[^()]*\///g' | sed -e 's/\"[^()]*\">//g' | sed -e 's/href=//g' `
+
+latest_nagios=`cat index.html* | grep "assets.nagios.com/downloads/nagioscore/releases" | sed -n '1p' | sed 's/^.*noopener/noopener/' | cut -f1 -d"<" | sed 's/noopener">//g' | tr '[:upper:]' '[:lower:]'`
 
 
 version=`echo $latest_nagios | sed 's/.*-//' | sed 's/t.*//' | sed 's/.$//'`
@@ -2821,10 +2827,10 @@ thankyou
 
 
 delete_nagios_default_centos () {
-echo "${txtylw}Please backup your Nagios configuration first and then if you finish backup, press any key to continue ... ${txtrst}"
-read -n 1 -s -r;echo
-sleep 1
-echo
+#echo "${txtylw}Please backup your Nagios configuration first and then if you finish backup, press Enter to continue ... ${txtrst}"
+#read  -r -p $'Press Enter to continue...';echo
+#sleep 1
+#echo
 echo "${txtylw}I will start to remove Nagios from your server.${txtrst}"
 sleep 2
 echo "${txtylw}Please wait a minute...${txtrst}"
@@ -2875,6 +2881,12 @@ then
                 delete_nagios_rpm_centos
 fi
 
+echo "${txtylw}Please backup your Nagios configuration first and then if you finish backup, press Enter to continue ... ${txtrst}"
+
+read _
+
+echo
+sleep 1
 check_delete
 }
 
@@ -2885,6 +2897,11 @@ sleep 2
 
 rpm -qa | grep nagios > rpm_nagios.txt 2>/dev/null
 size=`ls -al | grep rpm_nagios.txt | awk '{print $5}'`
+
+echo "${txtylw}Please backup your Nagios configuration first and then if you finish backup, press Enter to continue ... ${txtrst}"
+read -n 1 -s -r;echo
+sleep 1
+echo
 
 check_delete
 }
